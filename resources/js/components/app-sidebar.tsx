@@ -10,19 +10,10 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
 
 const footerNavItems: NavItem[] = [
     {
@@ -38,13 +29,45 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage().props as { auth?: { user?: { role?: string } } };
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: 'Főoldal',
+            href: '/',
+            icon: LayoutGrid,
+        },
+
+        // Bejelentkezett felhasználó
+        ...(auth?.user
+            ? [
+                  {
+                      title: 'Üzenetek',
+                      href: '/uzenetek',
+                      icon: Folder,
+                  },
+              ]
+            : []),
+
+        // Csak admin számára
+        ...(auth?.user?.role === 'admin'
+            ? [
+                  {
+                      title: 'Admin',
+                      href: '/admin',
+                      icon: BookOpen,
+                  },
+              ]
+            : []),
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href="/" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
