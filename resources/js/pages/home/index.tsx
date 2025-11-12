@@ -1,12 +1,19 @@
 import React from "react";
 import { Head, Link, usePage } from "@inertiajs/react";
 import AppLayout from "@/layouts/app-layout";
+import type { SharedData } from "@/types";
 
 type Stat = { label: string; value: string };
 type Feature = { title: string; text: string };
 type Product = { sku: string; name: string; cpu: string; ram: string; ssd: string; price: string };
 
-const DEFAULT_COMPANY = {
+// A szerverről érkező company prop típusa
+type Company = { name: string; tagline: string };
+
+// A teljes Inertia props ezen az oldalon: a közös SharedData + a saját company propunk
+type HomePageProps = SharedData & { company?: Company };
+
+const DEFAULT_COMPANY: Company = {
   name: "ReNew Kft.",
   tagline: "Gyárilag felújított notebookok – jobb, mint az új.",
 };
@@ -44,27 +51,26 @@ const featured: Product[] = [
 ];
 
 export default function HomeIndex() {
-  const { props } = usePage() as any;
-  const company = props?.company ?? DEFAULT_COMPANY;
+  const { company } = usePage<HomePageProps>().props;
+  const companyData = company ?? DEFAULT_COMPANY;
 
   return (
     <AppLayout>
-      <Head title={`Főoldal — ${company.name}`} />
+      <Head title={`Főoldal — ${companyData.name}`} />
 
       <section className="relative overflow-hidden rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-800 p-8 md:p-12">
         <div className="max-w-3xl">
           <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-sm text-emerald-300">
-            {company.name} • Gyárilag felújított notebookok
+            {companyData.name} • Gyárilag felújított notebookok
           </span>
 
           <h1 className="mt-4 text-3xl md:text-5xl font-bold tracking-tight">
-            Jobb, mint az új —{" "}
-            <span className="text-emerald-400">gyári felújítás</span>, korrekt ár, valódi garancia.
+            Jobb, mint az új — <span className="text-emerald-400">gyári felújítás</span>, korrekt ár, valódi garancia.
           </h1>
 
           <p className="mt-4 text-zinc-300 text-lg">
-            Seholország fővárosában működünk, kizárólag gondosan válogatott, vállalati kategóriás
-            notebookokat kínálunk — <b>jelentős megtakarítással</b> az új árhoz képest.
+            Seholország fővárosában működünk, kizárólag gondosan válogatott, vállalati kategóriás notebookokat kínálunk —
+            <b> jelentős megtakarítással</b> az új árhoz képest.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
