@@ -1,23 +1,41 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
 import { type User } from '@/types';
+import { Link } from '@inertiajs/react';
 
 export function UserInfo({
     user,
     showEmail = false,
 }: {
-    user: User;
+    user?: User | null; // ⬅️ lehet undefined vagy null is
     showEmail?: boolean;
 }) {
     const getInitials = useInitials();
 
+    if (!user) {
+        return (
+            <div className="flex flex-col items-start text-sm text-muted-foreground px-2 py-2">
+                <span>Vendég mód</span>
+                <div className="mt-1 flex gap-2">
+                   // ...
+<Link href="/login" className="text-emerald-500 hover:underline">Belépés</Link>
+<Link href="/register" className="text-emerald-500 hover:underline">Regisztráció</Link>
+
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
             <Avatar className="h-8 w-8 overflow-hidden rounded-full">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                    {getInitials(user.name)}
-                </AvatarFallback>
+                {user.avatar ? (
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                ) : (
+                    <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                        {getInitials(user.name)}
+                    </AvatarFallback>
+                )}
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
