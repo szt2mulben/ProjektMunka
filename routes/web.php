@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DatabaseController;
 
 Route::get('/', function () {
     return Inertia::render('home/index', [
@@ -13,6 +14,9 @@ Route::get('/', function () {
         ],
     ]);
 })->name('home');
+
+Route::middleware(['auth', 'verified'])->get('/adatbazis', [DatabaseController::class, 'index'])->name('adatbazis.index');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
