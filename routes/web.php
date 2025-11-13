@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Üzenetek – regisztrált felhasználóknak
 Route::middleware(['auth'])->group(function () {
     Route::get('/uzenetek', [MessageController::class, 'index'])->name('messages.index');
+    Route::post('/uzenetek', [MessageController::class, 'store'])->name('messages.store');
 });
 
 // Admin – csak admin
