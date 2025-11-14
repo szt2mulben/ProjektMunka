@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 
 type Row = {
   id: number;
@@ -13,7 +13,14 @@ type Row = {
   ar: string;
   db: number;
 };
-type Props = { items: { data: Row[]; links: any[] } };
+
+type PaginationLink = {
+  url: string | null;
+  label: string;
+  active: boolean;
+};
+
+type Props = { items: { data: Row[]; links: PaginationLink[] } };
 
 export default function DatabaseIndex() {
   const { props } = usePage<Props>();
@@ -23,7 +30,9 @@ export default function DatabaseIndex() {
     <AppLayout>
       <Head title="Adatbázis" />
 
-      <h1 className="text-2xl font-semibold mb-4">Adatbázis – Notebook kínálat</h1>
+      <h1 className="text-2xl font-semibold mb-4">
+        Adatbázis – Notebook kínálat
+      </h1>
 
       <div className="rounded-xl border border-zinc-800 overflow-x-auto">
         <table className="w-full text-sm">
