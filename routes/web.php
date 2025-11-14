@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DatabaseController;
 
 Route::get('/', function () {
     return Inertia::render('home/index', [
@@ -14,6 +15,9 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::middleware(['auth', 'verified'])->get('/adatbazis', [DatabaseController::class, 'index'])->name('adatbazis.index');
+
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('dashboard');
@@ -23,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Üzenetek – regisztrált felhasználóknak
 Route::middleware(['auth'])->group(function () {
     Route::get('/uzenetek', [MessageController::class, 'index'])->name('messages.index');
+    Route::post('/uzenetek', [MessageController::class, 'store'])->name('messages.store');
 });
 
 // Admin – csak admin

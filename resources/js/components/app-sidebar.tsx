@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Database } from 'lucide-react'; 
 import AppLogo from './app-logo';
 
 const footerNavItems: NavItem[] = [
@@ -26,9 +26,14 @@ export function AppSidebar() {
   const mainNavItems: NavItem[] = [
     { title: 'Főoldal', href: '/', icon: LayoutGrid },
 
-    ...(auth?.user ? [{ title: 'Üzenetek', href: '/uzenetek', icon: Folder }] : []),
+    ...(auth?.user ? [
+      { title: 'Üzenetek', href: '/uzenetek', icon: Folder },
+      { title: 'Adatbázis', href: '/adatbazis', icon: Database }, 
+    ] : []),
 
-    ...(auth?.user?.role === 'admin' ? [{ title: 'Admin', href: '/admin', icon: BookOpen }] : []),
+    ...(auth?.user?.role === 'admin' ? [
+      { title: 'Admin', href: '/admin', icon: BookOpen },
+    ] : []),
   ];
 
   return (
