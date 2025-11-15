@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Laptop;
-use Inertia\Inertia;
 
 class DatabaseController extends Controller
 {
@@ -26,7 +25,7 @@ class DatabaseController extends Controller
                 'db'      => $l->db,
             ]);
 
-        return Inertia::render('database/index', [
+        return view('database.index', [
             'items' => $laptops,
         ]);
     }

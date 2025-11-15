@@ -9,18 +9,9 @@ class MessageController extends Controller
 {
     public function index()
     {
-        $messages = Message::orderBy('created_at', 'desc')
-            ->get()
-            ->map(function (Message $m) {
-                return [
-                    'id'         => $m->id,
-                    'subject'    => $m->subject,
-                    'message'    => $m->message,
-                    'created_at' => $m->created_at->format('Y-m-d H:i'),
-                ];
-            });
+        $messages = Message::orderByDesc('created_at')->get();
 
-        return inertia('uzenetek/index', [
+        return view('uzenetek.index', [
             'messages' => $messages,
         ]);
     }
@@ -39,7 +30,7 @@ class MessageController extends Controller
         ]);
 
         return redirect()
-            ->route('messages.index')
+            ->route('uzenetek.index')
             ->with('success', 'Üzeneted sikeresen elküldve!');
     }
 }
