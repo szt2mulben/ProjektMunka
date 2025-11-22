@@ -6,7 +6,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\ProcessorController;
 
-
 Route::get('/', function () {
     $company = [
         'name'    => 'ReNew Kft.',
@@ -24,16 +23,14 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:user,admin'])->group(function () {
     Route::get('/uzenetek', [MessageController::class, 'index'])->name('messages.index');
     Route::post('/uzenetek', [MessageController::class, 'store'])->name('messages.store');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-});
 
-Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/processzorok', [ProcessorController::class, 'index'])->name('processors.index');
     Route::get('/processzorok/letrehozas', [ProcessorController::class, 'create'])->name('processors.create');
     Route::post('/processzorok', [ProcessorController::class, 'store'])->name('processors.store');
